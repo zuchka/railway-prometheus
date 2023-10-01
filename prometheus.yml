@@ -22,3 +22,13 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['demo.do.prometheus.io:9090']
+
+  # - job_name: 'postgres'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['localhost:9187']
+
+  # - job_name: 'mysql'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['localhost:9104']
