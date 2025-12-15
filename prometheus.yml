@@ -30,6 +30,14 @@ scrape_configs:
       - targets: ["contextdb-server-production-f7a4.up.railway.app"]
     metrics_path: "/metrics"
 
+  - job_name: 'context-db-api'
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: https
+      static_configs:
+        - targets: ["contextdb-api-production.up.railway.app"]
+
+
   # - job_name: 'postgres'
   #   scrape_interval: 5s
   #   static_configs:
