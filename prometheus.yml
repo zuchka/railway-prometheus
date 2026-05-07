@@ -1,36 +1,27 @@
 global:
-  scrape_interval:     15s # By default, scrape targets every 15 seconds.
-
-  # Attach these labels to any time series or alerts when communicating with
-  # external systems (federation, remote storage, Alertmanager).
+  scrape_interval:     15s
   external_labels:
     monitor: 'railway-prom'
 
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
-
     static_configs:
       - targets: ['localhost:9090']
-  
+
   - job_name: 'demo_prometheus_metrics'
     scrape_interval: 5s
     scheme: https
     metrics_path: /metrics
     static_configs:
-      - targets: ['https://railway-prometheus-production-24ce.up.railway.app/metrics']
+      - targets: ['railway-prometheus-production-24ce.up.railway.app']
 
-  # - job_name: 'postgres_metrics_collector'
-  #   scrape_interval: 5s
-  #   scheme: https
-  #   metrics_path: /metrics
-  #   static_configs:
-  #     - targets: ['path.to.db']
+  - job_name: 'postgres_metrics_collector'
+    scrape_interval: 1s
+    scheme: https
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['postgres-metrics-collector-staging.up.railway.app']
 
   # - job_name: 'postgres'
   #   scrape_interval: 5s
