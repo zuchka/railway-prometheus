@@ -24,3 +24,20 @@ uses the same login through a password file.
 
 Validate configuration changes with `sh -n docker-entrypoint.sh` and
 `promtool check config --syntax-only prometheus.yml` before deployment.
+
+## Free design.md collection
+
+Set `FREEDESIGN_METRICS_TOKEN` to the app's `PROMETHEUS_METRICS_TOKEN` using
+Railway service variables. The token is written to a private runtime file and
+sent only to `https://freedesign.md/api/metrics`. The `freedesign` job scrapes
+every two minutes with a ten-second timeout and does not follow redirects.
+
+After deployment, check `up{job="freedesign"} == 1` and both
+`fdmd_persistent_metrics_available` and `fdmd_billing_metrics_available` equal 1.
+Wait for two successful scrapes before retiring the old collector. This starts
+new collection only; historical DigitalOcean data is not imported.
+
+This service and free design.md run in separate Railway projects, so the
+scrape uses public HTTPS. Moving the collector into the application's project
+would be necessary to use Railway private networking. Data is retained on the
+existing `/prometheus` volume.
