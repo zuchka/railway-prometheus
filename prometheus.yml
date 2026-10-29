@@ -6,6 +6,9 @@ global:
 scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 5s
+    basic_auth:
+      username: metrics
+      password_file: /run/prometheus-secrets/web-password
     static_configs:
       - targets: ['localhost:9090']
 
@@ -32,3 +35,15 @@ scrape_configs:
   #   scrape_interval: 5s
   #   static_configs:
   #     - targets: ['localhost:9104']
+
+  - job_name: 'freedesign'
+    scrape_interval: 2m
+    scrape_timeout: 10s
+    scheme: https
+    metrics_path: /api/metrics
+    follow_redirects: false
+    authorization:
+      type: Bearer
+      credentials_file: /run/prometheus-secrets/freedesign-token
+    static_configs:
+      - targets: ['freedesign.md']
