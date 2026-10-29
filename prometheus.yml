@@ -6,6 +6,9 @@ global:
 scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 5s
+    basic_auth:
+      username: metrics
+      password_file: /run/prometheus-secrets/web-password
     static_configs:
       - targets: ['localhost:9090']
 
